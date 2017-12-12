@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+    <!DOCTYPE mapper   
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iot.calcvirtualpoint.dao.ITaskIplFailedDao">
+
+	<resultMap id="BaseResultMap" type="com.iot.calcvirtualpoint.model.TaskIplFailed">
+		<id column="id" property="id" />
+		<result property="calcId" column="calc_id" />
+		<result property="begTime" column="beg_time" />
+		<result property="endTime" column="end_time" />
+		<result property="createTime" column="create_time" />
+		<result property="remarks" column="remarks" />
+	</resultMap>
+
+	<sql id="BaseColumnList">
+	    <![CDATA[
+			n_task_ipl_failed.id id ,
+			n_task_ipl_failed.calc_id calcId ,
+			n_task_ipl_failed.beg_time begTime ,
+			n_task_ipl_failed.end_time endTime ,
+			n_task_ipl_failed.create_time createTime ,
+			n_task_ipl_failed.remarks remarks 
+	    ]]>
+	</sql>
+
+	<sql id="listWhere">
+		<if test="id != null ">
+			and id = #{id}
+		</if>
+		<if test="calcId != null and calcId != ''">
+			and calc_id = #{calcId}
+		</if>
+		<if test="begTime != null and begTime != ''">
+			and beg_time = DATE_FORMAT(#{begTime},'%Y-%m-%d %H:%i:%S')
+		</if>
+		<if test="endTime != null and endTime != ''">
+			and end_time = DATE_FORMAT(#{endTime},'%Y-%m-%d %H:%i:%S')
+		</if>
+		<if test="createTime != null and createTime != ''">
+			and create_time = #{createTime}
+		</if>
+		<if test="remarks != null and remarks != ''">
+			and remarks = #{remarks}
+		</if>
+	</sql>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		n_task_ipl_failed
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="calcId != null">
+				calc_id ,
+			</if>
+			<if test="begTime != null">
+				beg_time ,
+			</if>
+			<if test="endTime != null">
+				end_time ,
+			</if>
+			<if test="createTime != null">
+				create_time ,
+			</if>
+			<if test="remarks != null">
+				remarks ,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+
+			<if test="calcId != null">
+				#{calcId} ,
+			</if>
+			<if test="begTime != null">
+				#{begTime} ,
+			</if>
+			<if test="endTime != null">
+				#{endTime} ,
+			</if>
+			<if test="createTime != null">
+				#{createTime} ,
+			</if>
+			<if test="remarks != null">
+				#{remarks} ,
+			</if>
+		</trim>
+	</insert>
+
+	<select id="count" resultType="int">
+		select
+		count(*)
+		from
+		n_task_ipl_failed
+		<where>
+			<include refid="listWhere" />
+		</where>
+	</select>
+	
+	<select id="countByCond" resultType="int">
+		select
+		count(*)
+		from
+		n_task_ipl_failed
+		<where>
+			<![CDATA[ and create_time < CURDATE() ]]>
+		</where>
+	</select>
+	
+	<select id="countByDay" resultType="int">
+		select
+		count(*)
+		from
+		n_task_ipl_failed
+		<where>
+			<include refid="listWhere" />
+			<![CDATA[ and create_time = CURDATE() ]]>
+		</where>
+	</select>
+
+	<select id="findList" resultMap="BaseResultMap">
+		select
+		<include refid="BaseColumnList" />
+		from
+		n_task_ipl_failed
+		<where>
+			<include refid="listWhere" />
+		</where>
+		<if test="beginIndex != null and pageSize != null">
+			limit #{beginIndex} , #{pageSize}
+		</if>
+	</select>
+	
+	<select id="findListByCond" resultMap="BaseResultMap">
+		SELECT 
+			f.* 
+		FROM 
+		n_task_ipl_failed f left join n_task_calculate c 
+		on f.calc_id = c.ID 
+		where <![CDATA[ create_time < CURDATE() ]]> ORDER BY c.CALC_LEVEL asc;
+	</select>
+
+	<delete id="deleteById" parameterType="long">
+		delete from n_task_ipl_failed
+		where id = #{id}
+	</delete>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="Long">
+		select
+		<include refid="BaseColumnList" />
+		from
+		n_task_ipl_failed
+		where id = #{id}
+	</select>
+</mapper>
+

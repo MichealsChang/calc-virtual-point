@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+    <!DOCTYPE mapper   
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iot.calcvirtualpoint.dao.ITaskComMapperDao">
+
+	<resultMap id="BaseResultMap" type="com.iot.calcvirtualpoint.model.TaskComMapper">
+		<id column="id" property="id" />
+		<result property="taskId" column="TASK_ID" />
+		<result property="consId" column="CONS_ID" />
+		<result property="msId" column="MS_ID" />
+		<result property="timeDif" column="TIME_DIF" />
+		<result property="createTime" column="CREATE_TIME" />
+		<result property="remarks" column="REMARKS" />
+	</resultMap>
+
+	<sql id="BaseColumnList">
+	    <![CDATA[
+			n_task_com_mapper.id id ,
+			n_task_com_mapper.TASK_ID taskId ,
+			n_task_com_mapper.CONS_ID consId ,
+			n_task_com_mapper.MS_ID msId ,
+			n_task_com_mapper.TIME_DIF timeDif ,
+			n_task_com_mapper.CREATE_TIME createTime ,
+			n_task_com_mapper.REMARKS remarks
+	    ]]>
+	</sql>
+
+	<sql id="listWhere">
+		<if test="id != null ">
+			and id = #{id}
+		</if>
+		<if test="taskId != null and taskId != ''">
+			and TASK_ID = #{taskId}
+		</if>
+		<if test="consId != null and consId != ''">
+			and CONS_ID = #{consId}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			and CREATE_TIME = #{createTime}
+		</if>
+		<if test="timeDif != null and timeDif != ''">
+			and TIME_DIF = #{timeDif}
+		</if>
+		<if test="remarks != null and remarks != ''">
+			and REMARKS = #{remarks}
+		</if>
+	</sql>
+
+
+	<select id="count" resultType="int">
+		select
+		count(*)
+		from
+		n_task_com_mapper
+		<where>
+			<include refid="listWhere" />
+		</where>
+	</select>
+
+	<select id="findList" resultMap="BaseResultMap">
+		select
+		<include refid="BaseColumnList" />
+		from
+		n_task_com_mapper
+		<where>
+			<include refid="listWhere" />
+		</where>
+	</select>
+
+	<select id="findListByTaskId" resultMap="BaseResultMap">
+		select
+		distinct n_task_com_mapper.TASK_ID
+		from n_task_com_mapper
+	</select>
+</mapper>

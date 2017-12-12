@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd"
+	   default-autowire="byName" default-lazy-init="false">
+
+	<!-- 清理Map数据 start -->
+	<bean id="clearMap" class="com.iot.calcvirtualpoint.quartz.ClearMapJob" />
+	<bean id="clearMapJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="clearMap" />
+		</property>
+		<property name="targetMethod">
+			<value>clearMap</value>
+		</property>
+	</bean>
+	<bean id="clearMapTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="clearMapJob" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 0/1 * * ?</value><!-- 每小时执行一次 -->
+		</property>
+	</bean>
+	<!-- 清理Map数据 end -->
+
+	<!-- 日终补漏任务 start -->
+	<bean id="dayLeakRepairing" class="com.iot.calcvirtualpoint.quartz.DayLeakRepairingJob" />
+	<bean id="dayLeakRepairingJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="dayLeakRepairing" />
+		</property>
+		<property name="targetMethod">
+			<value>dayLeakRepairing</value>
+		</property>
+	</bean>
+	<bean id="dayLeakRepairingTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="dayLeakRepairingJob" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 1 * * ?</value><!-- 每天凌晨1点执行一次 -->
+		</property>
+	</bean>
+	<!-- 日终补漏任务 end -->
+
+	<!-- 刷新企业配置任务 start -->
+	<bean id="refreshTask" class="com.iot.calcvirtualpoint.quartz.RefreshTaskJob" />
+	<bean id="refreshTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject">
+			<ref bean="refreshTask" />
+		</property>
+		<property name="targetMethod">
+			<value>refreshTask</value>
+		</property>
+	</bean>
+	<bean id="refreshTaskTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail">
+			<ref bean="refreshTaskJob" />
+		</property>
+		<property name="cronExpression">
+			<value>0 0 0 * * ?</value><!-- 每天凌晨0点执行一次 -->
+		</property>
+	</bean>
+	<!-- 刷新企业配置任务 end -->
+
+
+	<!-- 启动触发器的配置开始 -->
+	<bean name="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="clearMapTrigger" />
+				<ref bean="dayLeakRepairingTrigger" />
+				<ref bean="refreshTaskTrigger" />
+			</list>
+		</property>
+	</bean>
+	<!-- 启动触发器的配置结束 -->
+
+</beans>

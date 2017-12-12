@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd ">
+
+	<context:component-scan base-package="com.iot.calcvirtualpoint.controller" />
+
+	<mvc:default-servlet-handler />
+	<!-- spring mvc @ResponseBody json 返回乱码问题解决 -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html; charset=utf-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/mweb/**" />
+			<bean class="com.iot.calcvirtualpoint.interceptor.FullPathInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/mweb/**" />
+			<bean id="oaSessionInterceptor" name="oaSessionInterceptor" class="com.iot.calcvirtualpoint.interceptor.SessionInterceptor">
+				<property name="isConfig" value="true" />
+				<property name="writeUrls">
+					<set>
+						<value>/mweb/account/login</value>
+						<value>/mweb/account/verify</value>
+					</set>
+				</property>
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/pages" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean class="com.iot.calcvirtualpoint.interceptor.ExceptionHandler"></bean>
+</beans>

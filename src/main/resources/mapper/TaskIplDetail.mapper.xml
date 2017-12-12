@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+    <!DOCTYPE mapper   
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iot.calcvirtualpoint.dao.ITaskIplDetailDao">
+
+	<resultMap id="BaseResultMap" type="com.iot.calcvirtualpoint.model.TaskIplDetail">
+		<id column="id" property="id" />
+		<result property="logId" column="log_id" />
+		<result property="time" column="time" />
+		<result property="msId" column="ms_id" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+
+	<sql id="BaseColumnList">
+	    <![CDATA[
+			${tableName}.id id ,
+			${tableName}.log_id logId ,
+			${tableName}.time time ,
+			${tableName}.ms_id msId ,
+			${tableName}.create_time createTime 
+	    ]]>
+	</sql>
+
+	<sql id="listWhere">
+		<if test="id != null ">
+			and id = ${id}
+		</if>
+		<if test="logId != null and logId != ''">
+			and log_id = ${logId}
+		</if>
+		<if test="time != null and time != ''">
+			and time = ${time}
+		</if>
+		<if test="msId != null and msId != ''">
+			and ms_id = ${msId}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			and create_time = ${createTime}
+		</if>
+	</sql>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id" statementType="STATEMENT">
+		insert into
+		${tableName}
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logId != null">
+				log_id ,
+			</if>
+			<if test="time != null">
+				time ,
+			</if>
+			<if test="msId != null">
+				ms_id ,
+			</if>
+			<if test="createTime != null">
+				create_time ,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+
+			<if test="logId != null">
+				${logId} ,
+			</if>
+			<if test="time != null">
+				'${time}' ,
+			</if>
+			<if test="msId != null">
+				'${msId}' ,
+			</if>
+			<if test="createTime != null">
+				'${createTime}' ,
+			</if>
+		</trim>
+	</insert>
+
+	<select id="count" resultType="int" statementType="STATEMENT">
+		select
+		count(*)
+		from
+		${tableName}
+		<where>
+			<include refid="listWhere" />
+		</where>
+	</select>
+
+	<select id="findList" resultMap="BaseResultMap" statementType="STATEMENT">
+		select
+		<include refid="BaseColumnList" />
+		from
+		${tableName}
+		<where>
+			<include refid="listWhere" />
+		</where>
+		<if test="beginIndex != null and pageSize != null">
+			limit ${beginIndex} , ${pageSize}
+		</if>
+	</select>
+
+	<update id="update" statementType="STATEMENT">
+		update ${tableName}
+		<set>
+			<if test="logId != null">
+				log_id = ${logId},
+			</if>
+			<if test="time != null">
+				time = ${time},
+			</if>
+			<if test="msId != null">
+				ms_id = ${msId},
+			</if>
+			<if test="createTime != null">
+				create_time = ${createTime},
+			</if>
+		</set>
+		where id = ${id}
+	</update>
+
+
+	<delete id="deleteById" parameterType="long" statementType="STATEMENT">
+		delete from ${tableName}
+		where id = ${id}
+	</delete>
+	<delete id="delete" statementType="STATEMENT">
+		delete from ${tableName}
+		<where>
+			<include refid="listWhere" />
+		</where>
+	</delete>
+
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="Long" statementType="STATEMENT">
+		select
+		<include refid="BaseColumnList" />
+		from
+		${tableName}
+		where id = ${id}
+	</select>
+</mapper>
+

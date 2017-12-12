@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <!DOCTYPE mapper   
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iot.calcvirtualpoint.dao.ITaskExeStatusDao">
+
+	<resultMap id="BaseResultMap" type="com.iot.calcvirtualpoint.model.TaskExeStatus">
+		<id column="id" property="id" />
+		<result property="taskId" column="task_id" />
+		<result property="status" column="status" />
+		<result property="lastExeTime" column="last_exe_time" />
+		<result property="lastTimeConsuming" column="last_time_consuming" />
+		<result property="createTime" column="create_time" />
+		<result property="remarks" column="remarks" />
+	</resultMap>
+
+	<sql id="BaseColumnList">
+	    <![CDATA[
+			n_task_exe_status.id id ,
+			n_task_exe_status.task_id taskId ,
+			n_task_exe_status.status status ,
+			n_task_exe_status.last_exe_time lastExeTime ,
+			n_task_exe_status.last_time_consuming lastTimeConsuming ,
+			n_task_exe_status.create_time createTime ,
+			n_task_exe_status.remarks remarks
+	    ]]>
+	</sql>
+
+	<sql id="listWhere">
+		<if test="id != null ">
+			and id = #{id}
+		</if>
+		<if test="taskId != null and taskId != ''">
+			and task_id = #{taskId}
+		</if>
+		<if test="status != null and status != ''">
+			and status = #{status}
+		</if>
+		<if test="lastExeTime != null and lastExeTime != ''">
+			and last_exe_time = #{lastExeTime}
+		</if>
+		<if test="lastTimeConsuming != null and lastTimeConsuming != ''">
+			and last_time_consuming = #{lastTimeConsuming}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			and create_time = #{createTime}
+		</if>
+		<if test="remarks != null and remarks != ''">
+			and remarks = #{remarks}
+		</if>
+	</sql>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		n_task_exe_status
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="taskId != null">
+				task_id ,
+			</if>
+			<if test="status != null">
+				status ,
+			</if>
+			<if test="lastExeTime != null">
+				last_exe_time ,
+			</if>
+			<if test="lastTimeConsuming != null">
+				last_time_consuming ,
+			</if>
+			<if test="createTime != null">
+				create_time ,
+			</if>
+			<if test="remarks != null">
+				remarks ,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+
+			<if test="taskId != null">
+				#{taskId} ,
+			</if>
+			<if test="status != null">
+				#{status} ,
+			</if>
+			<if test="lastExeTime != null">
+				#{lastExeTime} ,
+			</if>
+			<if test="lastTimeConsuming != null">
+				#{lastTimeConsuming} ,
+			</if>
+			<if test="createTime != null">
+				#{createTime} ,
+			</if>
+			<if test="remarks != null">
+				#{remarks} ,
+			</if>
+		</trim>
+	</insert>
+
+	<select id="count" resultType="int">
+		select
+		count(*)
+		from
+		n_task_exe_status
+		<where>
+			<include refid="listWhere" />
+		</where>
+	</select>
+
+	<select id="findList" resultMap="BaseResultMap">
+		select
+		<include refid="BaseColumnList" />
+		from
+		n_task_exe_status
+		<where>
+			<include refid="listWhere" />
+		</where>
+		<if test="sortName != null ">
+			order by
+			<if test="id == sortName">
+				id ,
+			</if>
+			<if test="taskId == sortName">
+				task_id ,
+			</if>
+			<if test="status == sortName">
+				status ,
+			</if>
+			<if test="lastExeTime == sortName">
+				last_exe_time ,
+			</if>
+			<if test="lastTimeConsuming == sortName">
+				last_time_consuming ,
+			</if>
+			<if test="createTime == sortName">
+				create_time ,
+			</if>
+			<if test="remarks == sortName">
+				remarks
+			</if>
+			<if test="order != null ">
+				${ order}
+			</if>
+		</if>
+		<if test="beginIndex != null and pageSize != null">
+			limit #{beginIndex} , #{pageSize}
+		</if>
+	</select>
+
+	<update id="update">
+		update n_task_exe_status
+		<set>
+			<if test="taskId != null">
+				task_id = #{taskId},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="lastExeTime != null">
+				last_exe_time = #{lastExeTime},
+			</if>
+			<if test="lastTimeConsuming != null">
+				last_time_consuming = #{lastTimeConsuming},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="remarks != null">
+				remarks = #{remarks},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+
+	<delete id="deleteById" parameterType="long">
+		delete from n_task_exe_status
+		where id = #{id}
+	</delete>
+	<delete id="delete">
+		delete from n_task_exe_status
+		<where>
+			<include refid="listWhere" />
+		</where>
+	</delete>
+
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="Long">
+		select
+		<include refid="BaseColumnList" />
+		from
+		n_task_exe_status
+		where id = #{id}
+	</select>
+
+</mapper>
+

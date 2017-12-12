@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.iot.calcvirtualpoint.dao.ITaskCalculateDao">
+
+	<resultMap id="BaseResultMap" type="com.iot.calcvirtualpoint.model.TaskCalculate">
+		<id column="ID" property="id" />
+		<result property="consId" column="CONS_ID" />
+		<result property="msName" column="MS_NAME" />
+		<result property="msId" column="MS_ID" />
+		<result property="dataItemCode" column="DATA_ITEM_CODE" />
+		<result property="calcLevel" column="CALC_LEVEL" />
+		<result property="collDataType" column="COLL_DATA_TYPE" />
+		<result property="calcFormula" column="CALC_FORMULA" />
+		<result property="P1" column="P1" />
+		<result property="P2" column="P2" />
+		<result property="P3" column="P3" />
+		<result property="P4" column="P4" />
+		<result property="P5" column="P5" />
+		<result property="P6" column="P6" />
+		<result property="P7" column="P7" />
+		<result property="P8" column="P8" />
+		<result property="P9" column="P9" />
+		<result property="P10" column="P10" />
+		<result property="P11" column="P11" />
+		<result property="P12" column="P12" />
+		<result property="P13" column="P13" />
+		<result property="P14" column="P14" />
+		<result property="P15" column="P15" />
+		<result property="P16" column="P16" />
+		<result property="P17" column="P17" />
+		<result property="P18" column="P18" />
+		<result property="P19" column="P19" />
+		<result property="P20" column="P20" />
+		<result property="P21" column="P21" />
+		<result property="P22" column="P22" />
+		<result property="P23" column="P23" />
+		<result property="P24" column="P24" />
+		<result property="P25" column="P25" />
+		<result property="P26" column="P26" />
+		<result property="P27" column="P27" />
+		<result property="P28" column="P28" />
+		<result property="P29" column="P29" />
+		<result property="P30" column="P30" />
+		<result property="P31" column="P31" />
+		<result property="P32" column="P32" />
+		<result property="P33" column="P33" />
+		<result property="P34" column="P34" />
+		<result property="P35" column="P35" />
+		<result property="P36" column="P36" />
+		<result property="P37" column="P37" />
+		<result property="P38" column="P38" />
+		<result property="P39" column="P39" />
+		<result property="P40" column="P40" />
+		<result property="P41" column="P41" />
+		<result property="P42" column="P42" />
+		<result property="P43" column="P43" />
+		<result property="P44" column="P44" />
+		<result property="P45" column="P45" />
+		<result property="P46" column="P46" />
+		<result property="P47" column="P47" />
+		<result property="P48" column="P48" />
+		<result property="P49" column="P49" />
+		<result property="P50" column="P50" />
+		<result property="P51" column="P51" />
+		<result property="P52" column="P52" />
+	</resultMap>
+
+	<sql id="BaseColumnList">
+	    <![CDATA[
+			n_task_calculate.ID id ,
+			n_task_calculate.CONS_ID consId ,
+			n_task_calculate.MS_NAME msName ,
+			n_task_calculate.MS_ID msId ,
+			n_task_calculate.DATA_ITEM_CODE dataItemCode ,
+			n_task_calculate.CALC_LEVEL calcLevel ,
+			n_task_calculate.COLL_DATA_TYPE collDataType ,
+			n_task_calculate.CALC_FORMULA calcFormula,
+			n_task_calculate.P1 P1,
+			n_task_calculate.P2 P2,
+			n_task_calculate.P3 P3,
+			n_task_calculate.P4 P4,
+			n_task_calculate.P5 P5,
+			n_task_calculate.P6 P6,
+			n_task_calculate.P7 P7,
+			n_task_calculate.P8 P8,
+			n_task_calculate.P9 P9,
+			n_task_calculate.P10 P10,
+			n_task_calculate.P11 P11,
+			n_task_calculate.P12 P12,
+			n_task_calculate.P13 P13,
+			n_task_calculate.P14 P14,
+			n_task_calculate.P15 P15,
+			n_task_calculate.P16 P16,
+			n_task_calculate.P17 P17,
+			n_task_calculate.P18 P18,
+			n_task_calculate.P19 P19,
+			n_task_calculate.P20 P20,
+			n_task_calculate.P21 P21,
+			n_task_calculate.P22 P22,
+			n_task_calculate.P23 P23,
+			n_task_calculate.P24 P24,
+			n_task_calculate.P25 P25,
+			n_task_calculate.P26 P26,
+			n_task_calculate.P27 P27,
+			n_task_calculate.P28 P28,
+			n_task_calculate.P29 P29,
+			n_task_calculate.P30 P30,
+			n_task_calculate.P31 P31,
+			n_task_calculate.P32 P32,
+			n_task_calculate.P33 P33,
+			n_task_calculate.P34 P34,
+			n_task_calculate.P35 P35,
+			n_task_calculate.P36 P36,
+			n_task_calculate.P37 P37,
+			n_task_calculate.P38 P38,
+			n_task_calculate.P39 P39,
+			n_task_calculate.P40 P40,
+			n_task_calculate.P41 P41,
+			n_task_calculate.P42 P42,
+			n_task_calculate.P43 P43,
+			n_task_calculate.P44 P44,
+			n_task_calculate.P45 P45,
+			n_task_calculate.P46 P46,
+			n_task_calculate.P47 P47,
+			n_task_calculate.P48 P48,
+			n_task_calculate.P49 P49,
+			n_task_calculate.P50 P50,
+			n_task_calculate.P51 P51,
+			n_task_calculate.P52 P52 
+	    ]]>
+	</sql>
+
+	<select id="count" resultType="int">
+		select
+		count(*)
+		from
+		n_task_calculate
+		where MS_ID = #{msId}
+		order by CALC_LEVEL asc
+	</select>
+
+	<select id="findList" resultMap="BaseResultMap">
+		select
+		<include refid="BaseColumnList" />
+		from
+		n_task_calculate
+		where MS_ID = #{msId}
+		order by CALC_LEVEL asc
+	</select>
+	
+	<select id="getById" resultMap="BaseResultMap" parameterType="Long">
+		select
+		<include refid="BaseColumnList" />
+		from
+		n_task_calculate
+		where id = #{id}
+	</select>
+</mapper>
+
